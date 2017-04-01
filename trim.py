@@ -34,8 +34,6 @@ def trim(img, lower, upper, size=None):
     bottom = sorted(points[2:], key=lambda x:x[0], reverse=True)  #y座標が大きい上2つをx座標でソート
     points = np.array(top + bottom, dtype='float32')              #左上, 右上, 右下, 左下の順で再格納
 
-    print(points)
-
     #縦幅, 横幅を計算
     if size is None:
         height = max(
@@ -67,13 +65,6 @@ def trim(img, lower, upper, size=None):
     return trim_img
 
 if __name__ == '__main__':
-    flag = False
-    args = sys.argv
-    if len(args) == 4:
-        flag = True
-        height = args[1]
-        width = args[2]
-
     #resultディレクトリの中のファイルを全削除
     file_names = os.listdir("./result/")
     for file_name in file_names:
@@ -89,13 +80,5 @@ if __name__ == '__main__':
         print(file_name)
 
         img = cv2.imread("./data/"+file_name)   #画像読み込み
-
-        #トリミング
-        if flag:
-            trimming_img = trim(img, [0, 0, 150], [255, 255, 255], size=(height, width))
-        else:
-            trimming_img = trim(img, [0, 0, 150], [255, 255, 255])
-
-        print(trimming_img)
-
+        trimming_img = trim(img, [0, 0, 150], [255, 255, 255], size=(3200, 2500)) #トリミング
         cv2.imwrite("./result/"+file_name, trimming_img)  #画像保存
