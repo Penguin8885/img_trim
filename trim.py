@@ -31,7 +31,7 @@ def trim(img, lower, upper, size=None):
     points = approx[:,0,:]                                        #近似点を抽出
     points = sorted(points, key=lambda x: x[1])                   #y座標でソート
     top = sorted(points[:2], key=lambda x: x[0])                  #y座標が小さい上2つをx座標でソート
-    bottom = sorted(points[2:], key=lambda x:x[0], reverse=True)  #y座標が大きい上2つをx座標でソート
+    bottom = sorted(points[-2:], key=lambda x:x[0], reverse=True)  #y座標が大きい上2つをx座標でソート
     points = np.array(top + bottom, dtype='float32')              #左上, 右上, 右下, 左下の順で再格納
 
     #縦幅, 横幅を計算
