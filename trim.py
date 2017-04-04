@@ -80,5 +80,5 @@ if __name__ == '__main__':
         print(file_name)
 
         img = cv2.imread("./data/"+file_name)   #画像読み込み
-        trimming_img = trim(img, [0, 0, 150], [255, 255, 255], size=(3200, 2500)) #トリミング
+        trimming_img = trim(img, [0, 0, 150], [255, 255, 255], size=(3000, 2440)) #トリミング
         cv2.imwrite("./result/"+file_name, trimming_img)  #画像保存
