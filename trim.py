@@ -2,6 +2,8 @@ import sys
 import os
 import cv2
 import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
 
 def trim(img, lower, upper, size=None):
     #閾値判定, グレイスケール化
@@ -14,14 +16,18 @@ def trim(img, lower, upper, size=None):
     gray = cv2.bitwise_not(gray)
     gray = cv2.GaussianBlur(gray, (5, 5), 0)
 
-    #輪郭抽出
-    _, cnts, _ = cv2.findContours(gray, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #輪郭抽出
+    #輪郭抽出を適切に行うために縁取り
+    cv2.rectangle(gray, (0,0), (img.shape[1]-1,img.shape[0]-1), (255,255,255), 2)
 
-    ###元画像そのままのサイズでトリミングすることを回避
+    #輪郭抽出
+    _, cnts, _ = cv2.findContours(gray, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+
+    #フィルタリング
     img_size = img.shape[0]*img.shape[1]
     for i, cnt in enumerate(cnts[:]):
         if cv2.contourArea(cnt) / img_size > 0.99:
-            cnts.pop(i)
+            cnts.pop(i)  #元画像をそのまま使うことを回避
+
 
     cnt = sorted(cnts, key=cv2.contourArea, reverse=True)[0]   #面積昇順ソート,最大を選択
     arclen = cv2.arcLength(cnt, True)                          #輪郭の長さを計算
